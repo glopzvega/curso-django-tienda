@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+	
+	<div class="row">
+		<div class="col-6">
+			{% if product.imagen %}
+			<img src="{{ product.imagen.url }}" alt="Imagen de Producto" style="width: 100%;">
+			{% elif not product.imagen %}
+			<img src="/media/default.png" alt="Imagen" style="width: 100%;">			
+			{% endif %}
+		</div>
+		<div class="col-6">		
+			<form action="" method="post" enctype="multipart/form-data">
+			    {% csrf_token %}
+			    <!-- <table>    	 -->
+			    {% for field in form %}
+				
+				<div class="row">				
+					<div class="col">
+						{{ field.label_tag }} 
+						{{ field }}
+					</div>
+				</div>
+
+			    {% endfor %}
+
+			    <!-- </table> -->
+			    <hr>
+			    <div class="row">		    	
+					<div class="col">
+			    		<input type="submit" class="btn btn-primary" value="Guardar" />
+			    	</div>
+			    </div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+	<h1>Listado de Productos:</h1>
+	<div class="row">
+		<div class="col">
+			<a href="{% url 'nuevo' %}" class="btn btn-primary">Agregar</a>
+			<!-- Example single danger button -->
+			<div class="btn-group">
+			  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    Vista
+			  </button>
+			  <div class="dropdown-menu">
+			    <a class="dropdown-item" href="{% url 'listado' %}">Vista de Tabla</a>
+			    <a class="dropdown-item" href="{% url 'cards' %}">Vista de Cuadricula</a>
+			  </div>
+			</div>			
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		
+		{% for prod in lista %}
+		
+		<div class="col-3">
+			
+			<div class="card" style="width: 20rem;">
+			  {% if prod.imagen %}
+			  <img class="card-img-top" src="{{ prod.imagen.url }}" alt="Card image cap">
+			  {% elif not prod.imagen %}
+			  <img src="/media/default.png" alt="Imagen" style="width: 100%;">
+			  {% endif %}
+			  <div class="card-body">
+			    <h4 class="card-title">{{ prod.nombre }} </h4>
+			    <h6 class="card-subtitle mb-2 text-muted">{{ prod.categoria }}</h6>
+			    <p class="card-text">
+			    	{{ prod.descripcion }}
+			    	<br>
+			    	{{ prod.cantidad }} disponible(s)
+			    </p>
+			    <div class="row">
+			    	<div class="col">			    		
+					    <a href="{% url 'detail' prod.id %}" class="btn btn-primary right">
+					    	Comprar					
+					    </a>
+			    	</div>
+			    	<div class="col text-right">
+			    		<span style="font-size: 1.5em;">${{ prod.precio }}</span>
+			    	</div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+		
+		{% if forloop.counter == 4 %}
+		
+		</div>
+		<br>
+		<div class="row">
+
+		{% endif %}
+		
+		{% endfor %}
+		
+	</div>
+</div>
+
+{% endblock %}

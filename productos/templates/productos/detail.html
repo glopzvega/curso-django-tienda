@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+	
+	<div class="row">
+		
+		<div class="col-6">
+			{% if product.imagen %}
+			<img src="{{ product.imagen.url }}" alt="Imagen" style="width: 100%;">
+			{% elif not product.imagen %}
+			<!-- /media/default.png -->
+			<img src="/media/default.png" alt="Imagen" style="width: 100%;">
+			{% endif %}
+		</div>
+		<div class="col-6">	
+
+			<h1><small>Info de Producto: </small> <br> {{ product.nombre }}</h1>
+			<br>
+			<div class="row">
+				<div class="col">
+					Descripcion: 
+					<br>
+					<h4>{{ product.descripcion }}</h4>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					Categoria: 
+					<br>
+					<h4>{{ product.categoria }}	</h4>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					Precio: 
+					<br>
+					<h4>{{ product.precio }}</h4>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					Cantidad: 
+					<br>
+					<h4>{{ product.cantidad }}</h4>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<a class="btn btn-primary" href="{% url 'listado' %}">Volver</a>
+									
+					<a class="btn btn-primary" href="{% url 'vender' product.id %}">Comprar</a>
+									
+					<a class="btn btn-primary" href="{% url 'modificar' product.id %}">Modificar</a>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+{% endblock %}

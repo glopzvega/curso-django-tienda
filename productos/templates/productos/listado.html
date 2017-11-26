@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<h1>Listado de Productos:</h1>
+<div class="row">
+	<div class="col">
+		<a href="{% url 'nuevo' %}" class="btn btn-primary">Agregar</a>
+		<!-- Example single danger button -->
+		<div class="btn-group">
+		  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Vista
+		  </button>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" href="{% url 'listado' %}">Vista de Tabla</a>
+		    <a class="dropdown-item" href="{% url 'cards' %}">Vista de Cuadricula</a>
+		  </div>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-12">	
+	
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Categoria</th>
+					<th>Descripcion</th>
+					<th>Cantidad</th>
+					<th>Precio</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for prod in lista %}
+				<tr>
+					<td>{{ prod.nombre }}</td>
+					<td>{{ prod.categoria }}</td>
+					<td>{{ prod.descripcion }}</td>
+					<td>{{ prod.cantidad }}</td>
+					<td>{{ prod.precio }}</td>
+					<td>
+						<a class="btn btn-success detail" href="{% url 'detail' prod.id %}">Ver Detalle</a>
+						<a class="btn btn-info update" href="{% url 'modificar' prod.id %}">Editar</a>
+						<a class="btn btn-danger delete" href="{% url 'eliminar' prod.id %}">Eliminar</a>
+					</td>
+				</tr>
+				{% endfor %}	
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>
+{% endblock %}
