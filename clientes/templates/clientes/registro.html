@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block menu %}{% endblock %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-4 offset-4">
+		  <h2>Registro</h2>
+		  <form method="post">
+		    {% csrf_token %}		    
+			
+			{{ form.username.label_tag }}
+			{{ form.username }}
+
+			<br>
+
+			{{ form.password.label_tag }}
+			{{ form.password }}
+			
+			<br>
+
+			{{ form.email.label_tag }}
+			{{ form.email }}
+
+			<br>
+
+			<input type="submit" class="btn btn-primary" value="Registrar">
+
+		  </form>
+		  
+		</div>
+	</div>
+</div>
+
+{% endblock %}

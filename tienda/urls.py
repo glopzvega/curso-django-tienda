@@ -18,9 +18,15 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
 
+from django.contrib.auth import views as auth_views
 # from productos import views
 
 urlpatterns = [
+	url(r'^login/$', auth_views.login, name="login"),
+	# url(r'^logout/$', auth_views.logout, name="logout"),
+	# url(r'^logout/$', auth_views.LogoutView.as_view(), {'next_page': '/login'}, name='logout'),
+	url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),
+	url(r'^clientes/', include("clientes.urls")),
 	url(r'^productos/', include("productos.urls")),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
