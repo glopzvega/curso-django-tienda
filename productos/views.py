@@ -9,6 +9,9 @@ from .models import Producto
 # Use Form y ModelForm
 from .forms import ProductoForm, ProductoModelForm
 
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def listado(request):
 	
 	# Obtengo lista de productos
@@ -41,6 +44,25 @@ def vender(request, prod_id):
 	# de no encontrar el registro
 	product = get_object_or_404(Producto, pk=prod_id)
 
+	if not request.session.get("carrito", False):
+		request.session["carrito"] = []
+	
+	carrito = request.session["carrito"]
+	find = False
+	for p in carrito:
+		if p["id"] == product.id:
+			find = True
+			p["cantidad"] = p["cantidad"] + 1
+
+	if not find:
+		carrito.append({
+			"id" : product.id,
+			"producto" : product.nombre,
+			"cantidad" : 1
+		})
+
+	request.session["carrito"] = carrito
+
 	# Modifico los datos del objeto obtenido
 	product.cantidad = product.cantidad - 1	
 
@@ -50,7 +72,7 @@ def vender(request, prod_id):
 	# Guardo el objeto modificado en un diccionario para enviarlo
 	# como contexto al template
 	context = {
-		"product" : product
+		"product" : product,		
 	}
 
 	# Devuelvo el template

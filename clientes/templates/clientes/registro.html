@@ -9,7 +9,7 @@
 	<div class="row">
 		<div class="col-4 offset-4">
 		  <h2>Registro</h2>
-		  <form method="post">
+		  <form action="" method="post">
 		    {% csrf_token %}		    
 			
 			{{ form.username.label_tag }}
@@ -19,7 +19,7 @@
 
 			{{ form.password.label_tag }}
 			{{ form.password }}
-			
+					
 			<br>
 
 			{{ form.email.label_tag }}
@@ -27,7 +27,21 @@
 
 			<br>
 
+			{{ form.first_name.label_tag }}
+			{{ form.first_name }}
+
+			<br>
+
+			{{ form.last_name.label_tag }}
+			{{ form.last_name }}
+
+			<br>
+
 			<input type="submit" class="btn btn-primary" value="Registrar">
+			<br>
+			<div class="text-center">				
+				o <a href="{% url 'login' %}">Entra con tu cuenta</a>
+			</div>
 
 		  </form>
 		  
