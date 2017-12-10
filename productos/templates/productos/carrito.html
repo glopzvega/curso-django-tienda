@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{# {{ request.session.carrito }} #}
+
 <div class="container">
 <h1>Carrito de Compra:</h1>
 <div class="row">
@@ -25,15 +28,34 @@
 			</thead>
 			<tbody>
 				{% if not empty %}
-				{% for prod in request.session.carrito %}
+				{% for prod in productos %}
 				<tr>
+					<td>
+					{% if prod.imagen %}
+						<a href="{{ prod.imagen.url }}" data-lity data-toggle="tooltip" data-placement="right" title="Da clic para ampliar">
+							<img src="{{ prod.imagen.url }}" alt="{{ prod.nombre }}" style="width: 100px;" >
+						</a>
+					{% else %}						
+						<img src="/media/default.png" alt="Imagen" style="width: 100px;">
+					{% endif %}
+					</td>
 					<td>{{ prod.nombre }} <b> [ {{ prod.categoria }} ] </b> <br> <small>{{ prod.descripcion }} </small></td>
 					<td>{{ prod.cantidad }}</td>
-					<td><input type="number" min="0" max="{{ prod.cantidad }}" value="{{ prod.cantidad_carrito }}"></td>					
+
+					<td>
+					
+					<form action="{% url 'cantidad_carrito' prod.id %}" method="post">
+						{% csrf_token %}						
+						<input type="number" name="cantidad_carrito" onchange="this.form.submit()" min="0" max="{{ prod.cantidad }}" value="{{ prod.cantidad_carrito }}">			
+					</form>
+
+					</td>					
 					<td>${{ prod.precio }} c/u</td>
 					<td><h3>${{ prod.subtotal }}</h3></td>
 					<td>
-						<a href="{% url 'quitar_carrito' prod.id %}" class="btn btn-danger"> Quitar</a>
+						<a href="{% url 'quitar_carrito' prod.id %}" class="btn btn-light text-danger" title="Quitar del Carrito de compra" data-toggle="tooltip" data-placement="left">
+							<i class="fa fa-remove" aria-hidden="true"></i>
+						</a>
 					</td>
 				</tr>
 				{% endfor %}	

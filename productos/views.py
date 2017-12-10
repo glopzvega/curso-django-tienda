@@ -12,7 +12,7 @@ from .forms import ProductoForm, ProductoModelForm
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def carrito(request):
+def ver_carrito(request):
 
 	if not request.session.has_key("carrito"):
 		request.session["carrito"] = []
@@ -21,7 +21,47 @@ def carrito(request):
 	if not request.session["carrito"]:
 		empty = True
 
-	return render(request, "productos/carrito.html", {"empty" : empty})
+	productos = []
+	for el in request.session["carrito"]:
+		producto = get_object_or_404(Producto, pk=el["id"])
+		producto.cantidad_carrito = el["cantidad_carrito"]
+		producto.subtotal = el["subtotal"]
+		productos.append(producto)
+
+	total = request.session["total"]
+
+	return render(request, "productos/carrito.html", {"empty" : empty, "productos" : productos, "total" : total})
+
+@login_required
+def cantidad_carrito(request, prod_id):
+
+	producto = get_object_or_404(Producto, pk=prod_id)
+
+	if not request.session.has_key("carrito"):
+		request.session["carrito"] = []
+
+	if request.method == "POST":
+		
+		cantidad_carrito = int(request.POST.get("cantidad_carrito", 0))
+
+		carrito = request.session["carrito"]
+		total = 0
+		
+		for el in carrito:
+
+			if el["id"] == producto.id:
+
+				if producto.cantidad >= cantidad_carrito:
+					el["cantidad_carrito"] = cantidad_carrito
+					el["subtotal"] = producto.precio * cantidad_carrito					
+			
+			total += el["subtotal"]
+
+		request.session["numero"] = len(carrito)
+		request.session["total"] = total
+		request.session["carrito"] = carrito
+
+	return redirect("/carrito/")	
 
 @login_required
 def agregar_carrito(request, prod_id):
@@ -50,6 +90,7 @@ def agregar_carrito(request, prod_id):
 			"id" : producto.id,
 			"nombre" : producto.nombre,
 			"descripcion" : producto.descripcion,
+			# "imagen" : producto.imagen,
 			"categoria" : producto.categoria,
 			"precio" : producto.precio,
 			"cantidad" : producto.cantidad,
@@ -63,6 +104,7 @@ def agregar_carrito(request, prod_id):
 	for el in carrito:
 		total += el["subtotal"]
 
+	request.session["numero"] = len(carrito)
 	request.session["total"] = total
 	request.session["carrito"] = carrito
 
@@ -87,6 +129,7 @@ def quitar_carrito(request, prod_id):
 	for el in carrito:
 		total += el["subtotal"]
 
+	request.session["numero"] = len(carrito)
 	request.session["total"] = total
 	request.session["carrito"] = carrito
 

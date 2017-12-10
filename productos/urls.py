@@ -9,8 +9,9 @@ urlpatterns = [
 	url(r'^cards/', views.listado_cards, name="cards"),
 	url(r'^listado', views.listado, name="listado"),
 	url(r'^nuevo/', views.nuevo, name='nuevo'),
-	url(r'^carrito/', views.carrito, name='carrito'),
 	
+	url(r'^carrito/', views.ver_carrito, name='carrito'),
+	url(r'^(?P<prod_id>[0-9]+)/cantidad/', views.cantidad_carrito, name='cantidad_carrito'),
 	url(r'^(?P<prod_id>[0-9]+)/agregar/', views.agregar_carrito, name='agregar_carrito'),
 	url(r'^(?P<prod_id>[0-9]+)/quitar/', views.quitar_carrito, name='quitar_carrito'),	
 
