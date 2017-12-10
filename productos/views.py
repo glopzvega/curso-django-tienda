@@ -12,6 +12,87 @@ from .forms import ProductoForm, ProductoModelForm
 from django.contrib.auth.decorators import login_required
 
 @login_required
+def carrito(request):
+
+	if not request.session.has_key("carrito"):
+		request.session["carrito"] = []
+
+	empty = False
+	if not request.session["carrito"]:
+		empty = True
+
+	return render(request, "productos/carrito.html", {"empty" : empty})
+
+@login_required
+def agregar_carrito(request, prod_id):
+
+	producto = get_object_or_404(Producto, pk=prod_id)
+
+	if not request.session.has_key("carrito"):
+		request.session["carrito"] = []
+		
+	carrito = request.session["carrito"]
+	find = False		
+	
+	for el in carrito:
+		if el["id"] == producto.id:
+			find = True
+
+			if producto.cantidad > el["cantidad_carrito"]:
+				el["cantidad_carrito"] += 1 
+				el["subtotal"] = producto.precio * el["cantidad_carrito"]
+			
+			break
+
+	if not find:
+
+		prod = {
+			"id" : producto.id,
+			"nombre" : producto.nombre,
+			"descripcion" : producto.descripcion,
+			"categoria" : producto.categoria,
+			"precio" : producto.precio,
+			"cantidad" : producto.cantidad,
+			"cantidad_carrito" : 1,
+			"subtotal" : producto.precio
+		}
+
+		carrito.append(prod)
+
+	total = 0
+	for el in carrito:
+		total += el["subtotal"]
+
+	request.session["total"] = total
+	request.session["carrito"] = carrito
+
+	return redirect("/carrito/")
+
+@login_required
+def quitar_carrito(request, prod_id):
+
+	producto = get_object_or_404(Producto, pk=prod_id)
+
+	if not request.session.has_key("carrito"):
+		request.session["carrito"] = []
+		
+	carrito = request.session["carrito"]	
+	
+	for el in carrito:
+		if el["id"] == producto.id:
+			carrito.remove(el)			
+			break
+
+	total = 0
+	for el in carrito:
+		total += el["subtotal"]
+
+	request.session["total"] = total
+	request.session["carrito"] = carrito
+
+	return redirect("/carrito/")
+
+@login_required
 def listado(request):
 	
 	# Obtengo lista de productos
@@ -25,6 +106,7 @@ def listado(request):
 	# Devuelvo un template enviando el contexto
 	return render(request, "productos/listado.html", data)
 
+@login_required
 def listado_cards(request):
 	
 	# Obtengo lista de productos
@@ -38,6 +120,7 @@ def listado_cards(request):
 	# Devuelvo un template enviando el contexto
 	return render(request, "productos/listado_cards.html", data)
 
+@login_required
 def vender(request, prod_id):
 	
 	# Busca un registro por primary key o devuelve un error 404 en caso
@@ -78,6 +161,7 @@ def vender(request, prod_id):
 	# Devuelvo el template
 	return redirect("detail", prod_id=product.id)
 
+@login_required
 def comprar(request, prod_id):
 	
 	# Busca un registro por primary key o devuelve un error 404 en caso
@@ -99,6 +183,7 @@ def comprar(request, prod_id):
 	# Devuelvo el template
 	return redirect("detail", prod_id=product.id)
 
+@login_required
 def modificar(request, prod_id):
 	
 	# Obtengo un registro por pk o devuelvo un 404
@@ -124,6 +209,7 @@ def modificar(request, prod_id):
 	# Devuelvo el template
 	return render(request, 'productos/producto_form.html', {'form': form, "product" : producto})
 
+@login_required
 def nuevo(request):	
 	
 	if request.method == 'POST':
@@ -145,6 +231,7 @@ def nuevo(request):
 
 	return render(request, 'productos/formulario.html', {'form': form })
 
+@login_required
 def eliminar(request, prod_id):
 	producto = get_object_or_404(Producto, pk=prod_id)
 	producto.delete()
@@ -153,6 +240,7 @@ def eliminar(request, prod_id):
 	return redirect('/productos/', {"lista" : data})
 	# return render(request, 'productos/listado.html', {"lista" : data})
 
+@login_required
 def detail(request, prod_id):
 
 	product = get_object_or_404(Producto, pk=prod_id)

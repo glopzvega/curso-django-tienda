@@ -28,7 +28,7 @@
 					<th>Nombre</th>
 					<th>Categoria</th>
 					<th>Descripcion</th>
-					<th>Cantidad</th>
+					<th>Disponible</th>
 					<th>Precio</th>
 					<th></th>
 				</tr>
@@ -39,12 +39,19 @@
 					<td>{{ prod.nombre }}</td>
 					<td>{{ prod.categoria }}</td>
 					<td>{{ prod.descripcion }}</td>
-					<td>{{ prod.cantidad }}</td>
-					<td>{{ prod.precio }}</td>
+					<td class="text-center">{{ prod.cantidad }}</td>
+					<td class="text-center">${{ prod.precio }} </td>
 					<td>
-						<a class="btn btn-success detail" href="{% url 'detail' prod.id %}">Ver Detalle</a>
-						<a class="btn btn-info update" href="{% url 'modificar' prod.id %}">Editar</a>
-						<a class="btn btn-danger delete" href="{% url 'eliminar' prod.id %}">Eliminar</a>
+						<div class="dropdown">
+						  <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						    Acciones
+						  </button>
+						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						    <a class="dropdown-item" href="{% url 'detail' prod.id %}">Ver Detalle</a>
+						    <a class="dropdown-item" href="{% url 'modificar' prod.id %}">Editar</a>
+						    <a class="dropdown-item" href="{% url 'eliminar' prod.id %}">Eliminar here</a>
+						  </div>
+						</div>						
 					</td>
 				</tr>
 				{% endfor %}	

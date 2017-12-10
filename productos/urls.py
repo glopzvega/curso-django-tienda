@@ -5,10 +5,15 @@ from . import views
 urlpatterns = [
 	# url(r'^$', views.index, name="index"),	
 	# url(r'^nombre/', views.otrometodo, name="otro"),
-	url(r'^$', views.listado, name="listado"),
+	url(r'^$', views.listado_cards, name="productos"),
 	url(r'^cards/', views.listado_cards, name="cards"),
+	url(r'^listado', views.listado, name="listado"),
 	url(r'^nuevo/', views.nuevo, name='nuevo'),
-	# url(r'^(?P<prod_id>[0-9]+)/guardar/$', views.guardar, name='guardar'),
+	url(r'^carrito/', views.carrito, name='carrito'),
+	
+	url(r'^(?P<prod_id>[0-9]+)/agregar/', views.agregar_carrito, name='agregar_carrito'),
+	url(r'^(?P<prod_id>[0-9]+)/quitar/', views.quitar_carrito, name='quitar_carrito'),	
+
 	url(r'^(?P<prod_id>[0-9]+)/eliminar/', views.eliminar, name='eliminar'),
 	url(r'^(?P<prod_id>[0-9]+)/modificar/', views.modificar, name='modificar'),
 	url(r'^(?P<prod_id>[0-9]+)/vender/', views.vender, name='vender'),

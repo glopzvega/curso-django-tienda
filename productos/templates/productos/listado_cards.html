@@ -24,9 +24,9 @@
 		
 		{% for prod in lista %}
 		
-		<div class="col-4">
+		<div class="col-3">
 			
-			<div class="card" style="width: 20rem;">
+			<div class="card" style="width: 20rem; margin-top: 1em;">
 			  {% if prod.imagen %}
 			  <img class="card-img-top" src="{{ prod.imagen.url }}" alt="Card image cap">
 			  {% elif not prod.imagen %}
@@ -42,8 +42,8 @@
 			    </p>
 			    <div class="row">
 			    	<div class="col">			    		
-					    <a href="{% url 'detail' prod.id %}" class="btn btn-primary right">
-					    	Comprar					
+					    <a href="{% url 'agregar_carrito' prod.id %}" class="btn btn-primary right">
+					    	Agregar al Carrito					
 					    </a>
 			    	</div>
 			    	<div class="col text-right">
@@ -52,15 +52,7 @@
 			    </div>
 			  </div>
 			</div>
-		</div>
-		
-		{% if forloop.counter == 4 %}
-		
-		</div>
-		<br>
-		<div class="row">
-
-		{% endif %}
+		</div>	
 		
 		{% endfor %}
 		

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<h1>Carrito de Compra:</h1>
+<div class="row">
+	<div class="col">
+		
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-12">	
+	
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Nombre</th>					
+					<th>Disponible</th>
+					<th>Cantidad</th>
+					<th>Precio</th>
+					<th>Subtotal</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if not empty %}
+				{% for prod in request.session.carrito %}
+				<tr>
+					<td>{{ prod.nombre }} <b> [ {{ prod.categoria }} ] </b> <br> <small>{{ prod.descripcion }} </small></td>
+					<td>{{ prod.cantidad }}</td>
+					<td><input type="number" min="0" max="{{ prod.cantidad }}" value="{{ prod.cantidad_carrito }}"></td>					
+					<td>${{ prod.precio }} c/u</td>
+					<td><h3>${{ prod.subtotal }}</h3></td>
+					<td>
+						<a href="{% url 'quitar_carrito' prod.id %}" class="btn btn-danger"> Quitar</a>
+					</td>
+				</tr>
+				{% endfor %}	
+				
+				{% else %}
+
+				<tr>
+					<td>Aun no has agregado nada a tu carrito.</td>					
+				</tr>
+
+				{% endif %}
+
+			</tbody>
+		</table>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col">
+		<a href="{% url 'productos' %}" class="btn btn-info">Continuar Comprando</a>
+	</div>
+	<div class="col">
+		{# <a href="{% url 'comprar' %}" class="btn btn-success">Comprar</a> #}
+		<div class="row">
+			<div class="col-11 text-right">				
+				<h1>Total: $ {{ request.session.total }} </h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-9 offset-3">				
+				<hr>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-11 text-right">
+				<a href="" class="btn btn-success btn-lg"> CONFIRMAR COMPRA </a>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}
