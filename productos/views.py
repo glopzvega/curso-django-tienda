@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def ver_carrito(request):
 
+	total = 0
 	if not request.session.has_key("carrito"):
 		request.session["carrito"] = []
 
@@ -28,7 +29,8 @@ def ver_carrito(request):
 		producto.subtotal = el["subtotal"]
 		productos.append(producto)
 
-	total = request.session["total"]
+	if "total" in request.session:
+		total = request.session["total"]
 
 	return render(request, "productos/carrito.html", {"empty" : empty, "productos" : productos, "total" : total})
 
