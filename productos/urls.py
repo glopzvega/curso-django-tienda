@@ -3,9 +3,9 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-	# url(r'^$', views.index, name="index"),	
-	# url(r'^nombre/', views.otrometodo, name="otro"),
+	
 	url(r'^$', views.listado_cards, name="productos"),
+	
 	url(r'^cards/', views.listado_cards, name="cards"),
 	url(r'^listado', views.listado, name="listado"),
 	url(r'^nuevo/', views.nuevo, name='nuevo'),

@@ -154,12 +154,22 @@ def listado(request):
 @login_required
 def listado_cards(request):
 	
-	# Obtengo lista de productos
-	lista_productos = Producto.objects.all()
-
+	filtro = ''
+	if request.method == "POST":
+		
+		if "filtro" in request.POST:
+			filtro = request.POST["filtro"]
+			# Obtengo lista de productos
+			lista_productos = Producto.objects.filter(nombre__icontains=filtro)
+	
+	if not filtro:
+		# Obtengo lista de productos
+		lista_productos = Producto.objects.all()
+	
 	# Genero objeto que me servira como contexto para enviar al template
 	data = {
-		"lista" : lista_productos
+		"lista" : lista_productos,
+		"filtro" : filtro
 	}
 
 	# Devuelvo un template enviando el contexto
