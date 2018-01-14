@@ -25,6 +25,7 @@ urlpatterns = [
     # url(r'^logout/$', auth_views.logout, name="logout"),
     # url(r'^logout/$', auth_views.LogoutView.as_view(), {'next_page': '/login'}, name='logout'),
 	url(r'^', include("productos.urls")),
+    url(r'^ventas', include("ventas.urls")),
     url(r'^login/$', auth_views.login, name="login"),
 	url(r'^logout/$', auth_views.logout, {'next_page': '/login'}, name='logout'),
 	url(r'^clientes/', include("clientes.urls")),

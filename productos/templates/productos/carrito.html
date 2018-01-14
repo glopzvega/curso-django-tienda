@@ -6,6 +6,7 @@
 
 <div class="container">
 <h1>Carrito de Compra:</h1>
+{{ request.session.ahora }}
 <div class="row">
 	<div class="col">
 		
@@ -14,7 +15,8 @@
 <hr>
 <div class="row">
 	<div class="col-12">	
-	
+		
+		
 		<table class="table">
 			<thead>
 				<tr>
@@ -45,7 +47,7 @@
 					<td>
 					
 					<form action="{% url 'cantidad_carrito' prod.id %}" method="post">
-						{% csrf_token %}						
+						{% csrf_token %}
 						<input type="number" name="cantidad_carrito" onchange="this.form.submit()" min="0" max="{{ prod.cantidad }}" value="{{ prod.cantidad_carrito }}">			
 					</form>
 
@@ -70,6 +72,7 @@
 
 			</tbody>
 		</table>
+
 	</div>
 </div>
 <hr>
@@ -91,7 +94,7 @@
 		</div>
 		<div class="row">
 			<div class="col-11 text-right">
-				<a href="" class="btn btn-success btn-lg"> CONFIRMAR COMPRA </a>
+				<a href="{% url 'registrar' %}" class="btn btn-success btn-lg"> CONFIRMAR COMPRA </a>
 			</div>
 		</div>
 	</div>

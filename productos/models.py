@@ -31,4 +31,5 @@ class Producto(models.Model):
 	image_tag.short_description = 'Imagen' 
 
 	def __str__(self):
-		return self.nombre
+		return self.nombre.encode('utf-8')
+		# return self.nombre.encode('ascii', errors='replace')
